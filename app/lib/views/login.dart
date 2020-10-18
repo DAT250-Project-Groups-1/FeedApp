@@ -10,10 +10,13 @@ class Login extends StatelessWidget {
     AuthService authService = context.watch<AuthService>();
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Polls"),
+      ),
       body: Center(
         child: Column(
           children: [
-            FlatButton(
+            MaterialButton(
               child: Text("Google Login"),
               onPressed: () {
                 authService.signInWithGoogle();
