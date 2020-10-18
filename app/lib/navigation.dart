@@ -11,24 +11,31 @@ class Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthService authService = context.watch<AuthService>();
+    MaterialPage authPage;
+
+    switch (authService.status) {
+      case Status.Authenticated:
+        authPage = MaterialPage(
+          child: MainScreen(),
+        );
+        break;
+      case Status.Unauthenticated:
+      case Status.Fail:
+        authPage = MaterialPage(
+          child: Login(),
+        );
+        break;
+      case Status.Authenticating:
+      case Status.Uninitialized:
+      case Status.SigningOut:
+        authPage = MaterialPage(
+          child: Loading(),
+        );
+        break;
+    }
 
     return Navigator(
-      pages: [
-        if (authService.status == Status.Unauthenticated ||
-            authService.status == Status.Fail)
-          MaterialPage(
-            child: Login(),
-          ),
-        if (authService.status == Status.Authenticated)
-          MaterialPage(
-            child: MainScreen(),
-          ),
-        if (authService.status == Status.Authenticating ||
-            authService.status == Status.SigningOut)
-          MaterialPage(
-            child: Loading(),
-          ),
-      ],
+      pages: [authPage],
       onPopPage: (route, result) => route.didPop(result),
     );
   }

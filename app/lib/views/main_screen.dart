@@ -20,7 +20,7 @@ class MainScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text("Hei, ${authService.userCredential.user.displayName}"),
+        child: Text("Hei, ${authService.user.displayName}"),
       ),
     );
   }
