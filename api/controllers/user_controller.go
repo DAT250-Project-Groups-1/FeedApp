@@ -35,11 +35,11 @@ var GetUser = func(u UserController) func(c *gin.Context) {
 		}
 
 		user := &models.User{ID: id}
-		users, err := u.Repo.ReadUser(user)
+		user, err = u.Repo.ReadUser(user)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		} else {
-			c.JSON(http.StatusOK, users)
+			c.JSON(http.StatusOK, user)
 		}
 	}
 }
