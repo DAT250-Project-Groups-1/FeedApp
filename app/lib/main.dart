@@ -1,4 +1,4 @@
-import 'package:app/login.dart';
+import 'package:app/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -17,16 +17,15 @@ class App extends StatelessWidget {
         if (snapshot.hasError) {
           return Scaffold(
             body: Center(
-              child: Text("Error, something went wrong"),
+              child: Text("Error, could not connect to firebase"),
             ),
           );
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return Login();
+          return Home();
         }
 
-        // Otherwise, show something whilst waiting for initialization to complete
         return Center(
           child: CircularProgressIndicator(),
         );
