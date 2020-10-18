@@ -1,4 +1,5 @@
 import 'package:app/home.dart';
+import 'package:app/views/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +27,7 @@ class App extends StatelessWidget {
           return Home();
         }
 
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Loading();
       },
     );
   }
