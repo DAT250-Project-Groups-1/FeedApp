@@ -1,105 +1,33 @@
 package controllers
 
 import (
-	"dat250-project-group-1/feedapp/data"
 	"dat250-project-group-1/feedapp/models"
 	"net/http"
-	"strconv"
 
+	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-// PollController handles requests on /polls
-type PollController struct {
-	Repo data.PollRepository
-}
+// PostPoll creates a new poll with the creators id as user id
+func PostPoll(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
 
-// GetPolls gets all polls
-var GetPolls = func(p PollController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		polls, err := p.Repo.ReadPolls()
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, polls)
-		}
+	var poll models.Poll
+	err := c.ShouldBind(&poll)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-}
 
-// GetPoll gets the poll with specified id
-var GetPoll = func(p PollController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
+	poll.UserID = userRecord.UID
 
-		poll := &models.Poll{ID: id}
-		polls, err := p.Repo.ReadPoll(poll)
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, polls)
-		}
+	db := c.MustGet("db").(*gorm.DB)
+	res := db.Create(&poll)
+	if res.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": res.Error.Error()})
+		return
 	}
-}
 
-// PostPoll inserts a new poll
-var PostPoll = func(p PollController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		poll := &models.Poll{}
-		err := c.Bind(poll)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-		err = p.Repo.CreatePoll(poll)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, poll)
-		}
-	}
-}
-
-// PutPoll updates a poll
-var PutPoll = func(p PollController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		poll := &models.Poll{}
-		err = c.Bind(poll)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		poll.ID = id
-
-		err = p.Repo.UpdatePoll(poll)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, poll)
-		}
-	}
-}
-
-// DeletePoll deletes a poll
-var DeletePoll = func(p PollController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		poll := &models.Poll{ID: id}
-		err = p.Repo.DeletePoll(poll)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, poll)
-		}
-	}
+	c.JSON(http.StatusOK, poll)
 }
