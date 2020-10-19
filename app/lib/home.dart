@@ -12,6 +12,12 @@ class Home extends StatelessWidget {
         create: (BuildContext context) => AuthService(),
         child: Navigation(),
       ),
+      theme: ThemeData(
+        primaryColor: Color(0xFF445963),
+        primaryColorDark: Color(0xFF1b3039),
+        primaryColorLight: Color(0xFF708690),
+        accentColor: Color(0xFFffb300),
+      ),
     );
   }
 }

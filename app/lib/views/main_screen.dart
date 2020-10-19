@@ -29,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _views[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
