@@ -1,26 +1,52 @@
-import 'package:app/auth/auth_service.dart';
+import 'package:app/views/my_polls.dart';
+import 'package:app/views/public_polls.dart';
+import 'package:app/views/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    AuthService authService = context.watch<AuthService>();
+
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    List<Widget> _views = <Widget>[
+      PublicPolls(),
+      MyPolls(),
+      Users(),
+    ];
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          MaterialButton(
-            child: Text("Sign out"),
-            onPressed: () async {
-              await authService.signOut();
-            },
+      body: _views[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.thumb_up),
+            label: "Public polls"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.analytics),
+              label: "My polls"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: "Users"
           )
         ],
-      ),
-      body: Center(
-        child: Text("Hei, ${authService.user.displayName}"),
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
