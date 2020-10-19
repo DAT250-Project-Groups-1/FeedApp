@@ -12,21 +12,20 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  List<Widget> _views = <Widget>[
+    PublicPolls(),
+    MyPolls(),
+    Users(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-
-    List<Widget> _views = <Widget>[
-      PublicPolls(),
-      MyPolls(),
-      Users(),
-    ];
-
     return Scaffold(
       body: _views[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -34,16 +33,16 @@ class _MainScreenState extends State<MainScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
-            label: "Public polls"
+            label: "Public polls",
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.analytics),
-              label: "My polls"
+            icon: Icon(Icons.analytics),
+            label: "My polls",
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: "Users"
-          )
+            icon: Icon(Icons.people),
+            label: "Users",
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
