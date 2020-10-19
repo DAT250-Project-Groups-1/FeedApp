@@ -1,106 +1,51 @@
 package controllers
 
 import (
-	"dat250-project-group-1/feedapp/data"
 	"dat250-project-group-1/feedapp/models"
 	"net/http"
-	"strconv"
 
+	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-// UserController handles requests on /users
-type UserController struct {
-	Repo data.UserRepository
-}
+// GetUser gets the authenticated user
+func GetUser(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
+	var user models.User
 
-// GetUsers gets all users
-var GetUsers = func(u UserController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		users, err := u.Repo.ReadUsers()
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, users)
-		}
+	db := c.MustGet("db").(*gorm.DB)
+	res := db.Preload("Polls").Preload("Votes").Find(&user, userRecord.UID)
+
+	if res.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": res.Error.Error()})
+	} else {
+		c.JSON(http.StatusOK, user)
 	}
 }
 
-// GetUser gets the user with specified id
-var GetUser = func(u UserController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// PostUser add a new user if not already in database, else return the user
+func PostUser(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
+	var user models.User
+
+	db := c.MustGet("db").(*gorm.DB)
+	res := db.Find(&user, userRecord.UID)
+
+	if res.RowsAffected == 0 {
+
+		user.ID = userRecord.UID
+		user.Name = userRecord.DisplayName
+		user.Email = userRecord.Email
+
+		res = db.Create(&user)
+		if res.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": res.Error.Error()})
+			return
 		}
 
-		user := &models.User{ID: id}
-		user, err = u.Repo.ReadUser(user)
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, user)
-		}
-	}
-}
-
-// PostUser inserts a new user
-var PostUser = func(u UserController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		user := &models.User{}
-		err := c.Bind(user)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		err = u.Repo.CreateUser(user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, user)
-		}
-	}
-}
-
-// PutUser updates a user
-var PutUser = func(u UserController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		user := &models.User{}
-		err = c.Bind(user)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		user.ID = id
-
-		err = u.Repo.UpdateUser(user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, user)
-		}
-	}
-}
-
-// DeleteUser deletes a user
-var DeleteUser = func(u UserController) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-
-		user := &models.User{ID: id}
-		err = u.Repo.DeleteUser(user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, user)
-		}
+		c.JSON(http.StatusOK, user)
+	} else {
+		c.JSON(http.StatusOK, user)
 	}
 }

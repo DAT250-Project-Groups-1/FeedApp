@@ -4,6 +4,6 @@ package models
 type Vote struct {
 	ID     int
 	IsYes  bool
-	UserID int
+	UserID string
 	PollID int
 }
