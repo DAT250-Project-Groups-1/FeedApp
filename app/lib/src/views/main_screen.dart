@@ -1,6 +1,6 @@
-import 'package:app/views/my_polls.dart';
-import 'package:app/views/public_polls.dart';
-import 'package:app/views/users.dart';
+import 'package:app/src/views/my_polls.dart';
+import 'package:app/src/views/public_polls.dart';
+import 'package:app/src/views/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

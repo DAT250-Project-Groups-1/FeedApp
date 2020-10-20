@@ -5,13 +5,11 @@ import (
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
-	"google.golang.org/api/option"
 )
 
 // InitFirebase initialize the firebase connection
 func InitFirebase() *auth.Client {
-	opt := option.WithCredentialsFile("service_account.json")
-	app, err := firebase.NewApp(context.Background(), nil, opt)
+	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
 		panic("Firebase load error")
 	}
