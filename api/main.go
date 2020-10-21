@@ -25,6 +25,8 @@ func main() {
 		c.Set("auth", auth)
 	})
 
+	router.Use(middleware.Cors)
+
 	// Registrer routes
 	admin := router.Group("/admin")
 	admin.Use(middleware.Auth)
@@ -35,7 +37,6 @@ func main() {
 	users := router.Group("/users")
 	users.Use(middleware.Auth)
 	{
-		users.GET("", controllers.GetUser)
 		users.POST("", controllers.PostUser)
 	}
 

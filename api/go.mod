@@ -13,13 +13,13 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/stretchr/testify v1.6.1 // indirect
-	github.com/ugorji/go v1.1.12 // indirect
+	github.com/ugorji/go v1.1.13 // indirect
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
-	golang.org/x/net v0.0.0-20201016165138-7b1cca2348c0 // indirect
+	golang.org/x/net v0.0.0-20201020065357-d65d470038a5 // indirect
 	golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13 // indirect
-	google.golang.org/api v0.33.0
+	google.golang.org/api v0.33.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
-	gorm.io/driver/postgres v1.0.2
-	gorm.io/gorm v1.20.2
+	gorm.io/driver/postgres v1.0.3
+	gorm.io/gorm v1.20.3
 )

@@ -1,15 +1,18 @@
-import 'package:app/auth/auth_service.dart';
-import 'package:app/navigation.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app/src/api/api_service.dart';
+import 'package:app/src/auth/auth_service.dart';
+import 'package:app/src/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ChangeNotifierProvider(
-        create: (BuildContext context) => AuthService(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthService()),
+          ChangeNotifierProvider(create: (_) => ApiService())
+        ],
         child: Navigation(),
       ),
       theme: ThemeData(
