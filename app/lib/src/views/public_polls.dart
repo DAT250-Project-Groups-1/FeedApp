@@ -1,5 +1,4 @@
 import 'package:app/src/auth/auth_service.dart';
-import 'package:app/src/views/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,13 +23,7 @@ class PublicPolls extends StatelessWidget {
                     color: themeData.primaryTextTheme.subtitle1.color),
               ),
               onPressed: () {
-                // TODO Change to declarative
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Login(),
-                  ),
-                );
+                authService.changeStatus(Status.Login);
               },
             )
         ],

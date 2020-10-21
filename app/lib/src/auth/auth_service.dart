@@ -7,6 +7,7 @@ enum Status {
   Authenticating,
   Unauthenticated,
   Uninitialized,
+  Login,
   Fail,
   SigningOut
 }
@@ -25,30 +26,29 @@ class AuthService with ChangeNotifier {
       if (user != null) {
         this.user = user;
         _repository.postUser(user);
-        _changeStatus(Status.Authenticated);
+        changeStatus(Status.Authenticated);
       } else {
-        _changeStatus(Status.Unauthenticated);
+        changeStatus(Status.Unauthenticated);
       }
     });
   }
 
   void signInWithGoogle() async {
-    _changeStatus(Status.Authenticating);
+    changeStatus(Status.Authenticating);
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
     await FirebaseAuth.instance.signInWithPopup(googleProvider).catchError((e) {
       errorMessage = e.toString();
-      _changeStatus(Status.Fail);
+      changeStatus(Status.Fail);
     });
   }
 
   Future<void> signOut() async {
-    _changeStatus(Status.SigningOut);
+    changeStatus(Status.SigningOut);
     await FirebaseAuth.instance.signOut();
-    _changeStatus(Status.Unauthenticated);
   }
 
-  void _changeStatus(Status status) {
+  void changeStatus(Status status) {
     _status = status;
     notifyListeners();
   }
