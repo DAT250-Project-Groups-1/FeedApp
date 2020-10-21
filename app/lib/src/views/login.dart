@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_service.dart';
@@ -11,13 +12,13 @@ class Login extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Polls"),
+        title: Text("Login"),
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MaterialButton(
-              child: Text("Google Login"),
+            GoogleSignInButton(
               onPressed: () {
                 authService.signInWithGoogle();
               },
