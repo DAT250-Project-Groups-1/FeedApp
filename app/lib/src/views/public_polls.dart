@@ -1,8 +1,21 @@
+import 'package:app/src/api/api_service.dart';
 import 'package:app/src/auth/auth_service.dart';
+import 'package:app/src/widgets/poll_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PublicPolls extends StatelessWidget {
+class PublicPolls extends StatefulWidget {
+  @override
+  _PublicPollsState createState() => _PublicPollsState();
+}
+
+class _PublicPollsState extends State<PublicPolls> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ApiService>(context, listen: false).getPublicPolls();
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthService authService = context.watch<AuthService>();
@@ -28,6 +41,7 @@ class PublicPolls extends StatelessWidget {
             )
         ],
       ),
+      body: PollList(),
     );
   }
 }
