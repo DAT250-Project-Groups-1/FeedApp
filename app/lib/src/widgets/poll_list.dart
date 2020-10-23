@@ -20,7 +20,7 @@ class _PollListState extends State<PollList> {
       builder: (context, state, _) {
         return ListView.builder(
           itemCount: state.polls.length,
-          itemBuilder: (context, i) => new PollTile(state.polls[i]),
+          itemBuilder: (context, i) => PollTile(state.polls[i]),
         );
       },
     );
