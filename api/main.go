@@ -49,6 +49,7 @@ func main() {
 
 	public := router.Group("/public")
 	{
+		public.GET("/polls/:code", controllers.GetPoll)
 		public.GET("/polls", controllers.GetPublicPolls)
 		public.POST("/vote", controllers.PostPublicVote)
 	}

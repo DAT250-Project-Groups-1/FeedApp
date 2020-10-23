@@ -21,10 +21,8 @@ class AdminDialog extends StatelessWidget {
               },
             ),
             TextButton(
-              child: Text("No"),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
+                child: Text("No"),
+                onPressed: () => Navigator.pop(context),
             ),
           ],
         ),

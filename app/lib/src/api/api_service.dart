@@ -9,12 +9,17 @@ class ApiService with ChangeNotifier {
   var _users = List<User>();
 
   List<Poll> get polls => _polls;
-  List<User> get users=> _users;
+
+  List<User> get users => _users;
 
   getPublicPolls() async {
     var polls = await _repository.getPublicPolls();
     _polls = polls;
     notifyListeners();
+  }
+
+  Future<Poll> getPoll(String code) async {
+    return await _repository.getPoll(code);
   }
 
   getUsers() async {
