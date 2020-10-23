@@ -32,8 +32,8 @@ func GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// EditUser edits one user
-func EditUser(c *gin.Context) {
+// MakeAdmin makes user admin
+func MakeAdmin(c *gin.Context) {
 	userRecord := c.MustGet("user").(*auth.UserRecord)
 	var user models.User
 
@@ -46,8 +46,7 @@ func EditUser(c *gin.Context) {
 	}
 
 	var userToEdit models.User
-
-	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin", true)
+	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin",true)
 
 	if res.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "count not edit user"})
