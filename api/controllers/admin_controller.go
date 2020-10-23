@@ -15,7 +15,7 @@ func GetUsers(c *gin.Context) {
 	var user models.User
 
 	db := c.MustGet("db").(*gorm.DB)
-	res := db.Find(&user, userRecord.UID)
+	res := db.First(&user, "ID = ?", userRecord.UID)
 
 	if !user.IsAdmin {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
@@ -30,4 +30,28 @@ func GetUsers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, users)
+}
+
+// MakeAdmin makes user admin
+func MakeAdmin(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
+	var user models.User
+
+	db := c.MustGet("db").(*gorm.DB)
+	res := db.First(&user, "ID = ?", userRecord.UID)
+
+	if !user.IsAdmin {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
+		return
+	}
+
+	var userToEdit models.User
+	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin",true)
+
+	if res.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "count not edit user"})
+		return
+	}
+
+	c.JSON(http.StatusOK, userToEdit)
 }

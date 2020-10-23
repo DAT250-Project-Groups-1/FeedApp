@@ -22,4 +22,9 @@ class ApiService with ChangeNotifier {
     _users = users;
     notifyListeners();
   }
+
+  Future<User> makeAdmin(String uid) async {
+    var user = await _repository.makeAdmin(uid);
+    return user;
+  }
 }
