@@ -21,7 +21,7 @@ class UserTile extends StatelessWidget {
     ApiService apiService = context.watch<ApiService>();
 
     _makeUserAdmin() async {
-      await apiService.editUser(user.iD);
+      await apiService.makeAdmin(user.iD);
       await apiService.getUsers();
     }
 
