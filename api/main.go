@@ -32,6 +32,7 @@ func main() {
 	admin.Use(middleware.Auth)
 	{
 		admin.GET("/users", controllers.GetUsers)
+		admin.PUT("/edit/:uid", controllers.EditUser)
 	}
 
 	users := router.Group("/users")
