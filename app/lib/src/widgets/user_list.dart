@@ -7,10 +7,10 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApiService apiService = context.watch<ApiService>();
-    return ListView.builder(
-      itemCount: apiService.users.length,
-      itemBuilder: (BuildContext context, int i) =>
-          UserTile(apiService.users[i]),
-    );
+    return ListView.separated(
+        itemCount: apiService.users.length,
+        itemBuilder: (BuildContext context, int i) =>
+            UserTile(apiService.users[i]),
+        separatorBuilder: (_, __) => Divider(thickness: 1,));
   }
 }

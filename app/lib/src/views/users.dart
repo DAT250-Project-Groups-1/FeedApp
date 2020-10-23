@@ -1,5 +1,4 @@
 import 'package:app/src/api/api_service.dart';
-import 'package:app/src/api/repository.dart';
 import 'package:app/src/auth/auth_service.dart';
 import 'package:app/src/widgets/user_list.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,12 @@ class Users extends StatefulWidget {
 }
 
 class _UsersState extends State<Users> {
-
   @override
   void initState() {
     super.initState();
     context.read<ApiService>().getUsers();
   }
+
   @override
   Widget build(BuildContext context) {
     AuthService authService = context.watch<AuthService>();
@@ -33,10 +32,13 @@ class _UsersState extends State<Users> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // Nothing yet
+        },
+      ),
       body: UserList(),
     );
   }
 }
-
-
-

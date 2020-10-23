@@ -18,8 +18,8 @@ func GetUsers(c *gin.Context) {
 	res := db.Find(&user, userRecord.UID)
 
 	if !user.IsAdmin {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
-		return
+		//c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
+		//return
 	}
 
 	var users []models.User
