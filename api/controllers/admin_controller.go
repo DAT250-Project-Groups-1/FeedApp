@@ -15,11 +15,11 @@ func GetUsers(c *gin.Context) {
 	var user models.User
 
 	db := c.MustGet("db").(*gorm.DB)
-	res := db.Find(&user, userRecord.UID)
+	res := db.First(&user, "ID = ?", userRecord.UID)
 
 	if !user.IsAdmin {
-		//c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
-		//return
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
+		return
 	}
 
 	var users []models.User
@@ -31,32 +31,26 @@ func GetUsers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, users)
 }
+
 // EditUser edits one user
 func EditUser(c *gin.Context) {
 	userRecord := c.MustGet("user").(*auth.UserRecord)
 	var user models.User
 
 	db := c.MustGet("db").(*gorm.DB)
-	res := db.Find(&user, userRecord.UID)
+	res := db.First(&user, "ID = ?", userRecord.UID)
 
 	if !user.IsAdmin {
-		//c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
-		//return
-	}
-
-	var userToEdit models.User
-	res = db.Find(&userToEdit, c.Param("uid"))
-
-	if res.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "no user with given uid"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
 		return
 	}
 
-	userToEdit.IsAdmin = true
-	res = db.Update(c.Param("uid"), userToEdit)
+	var userToEdit models.User
+
+	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin", true)
 
 	if res.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error" : "count not edit user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "count not edit user"})
 		return
 	}
 
