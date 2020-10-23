@@ -33,4 +33,10 @@ class Repository {
         .map((p) => User.fromJson(p))
         .toList();
   }
+
+  Future<User> editUser(String uid) async {
+    var res = await http.put('$API_URL/admin/edit/$uid',
+        headers: {"Authorization": "Bearer ${await token}"});
+    return User.fromJson(json.decode(res.body));
+  }
 }
