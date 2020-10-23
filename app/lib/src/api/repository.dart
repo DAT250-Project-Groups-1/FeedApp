@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/src/models/poll.dart';
+import 'package:app/src/models/public_vote.dart';
 import 'package:app/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,13 @@ class Repository {
     return (json.decode(res.body) as List)
         .map((p) => Poll.fromJson(p))
         .toList();
+  }
+
+  postPublicVote(PublicVote publicVote) async {
+    await http.post(
+      '$API_URL/public/vote',
+      body: publicVote.toJson(),
+    );
   }
 
   Future<Poll> getPoll(String code) async {
