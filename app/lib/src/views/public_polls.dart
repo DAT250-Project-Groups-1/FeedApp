@@ -27,7 +27,7 @@ class _PublicPollsState extends State<PublicPolls> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ApiService>(context, listen: false).getPublicPolls();
+    context.read<ApiService>().getPublicPolls();
   }
 
   @override
@@ -44,7 +44,6 @@ class _PublicPollsState extends State<PublicPolls> {
             searched = poll;
           });
         } catch (e) {
-          print(e);
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text("No polls with given code"),
@@ -81,9 +80,15 @@ class _PublicPollsState extends State<PublicPolls> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.analytics),
+        child: searched == null ? Icon(Icons.analytics) : Icon(Icons.clear),
         onPressed: () async {
-          await _showPollDialog(context, _getPoll);
+          if (searched == null) {
+            await _showPollDialog(context, _getPoll);
+          } else {
+            setState(() {
+              searched = null;
+            });
+          }
         },
       ),
       body: searched == null ? PollList() : PollTile(searched),

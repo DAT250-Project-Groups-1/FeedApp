@@ -1,6 +1,9 @@
 import 'package:app/src/api/api_service.dart';
+import 'package:app/src/auth/auth_service.dart';
 import 'package:app/src/models/poll.dart';
 import 'package:app/src/models/public_vote.dart';
+import 'package:app/src/models/vote.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +15,8 @@ class PollTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ApiService apiService = context.watch<ApiService>();
+    AuthService authService = context.watch<AuthService>();
+    User user = FirebaseAuth.instance.currentUser;
 
     return Container(
       child: Card(
@@ -31,9 +36,15 @@ class PollTile extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () async {
-                    await apiService.postPublicVote(
-                      PublicVote(isYes: true, pollID: poll.id),
-                    );
+                    if (poll.isPrivate) {
+                      await apiService.postVote(
+                        Vote(pollID: poll.id, userID: user.uid, isYes: true),
+                      );
+                    } else {
+                      await apiService.postPublicVote(
+                        PublicVote(isYes: true, pollID: poll.id),
+                      );
+                    }
                   },
                   child: Text(
                     "YES",
@@ -42,9 +53,15 @@ class PollTile extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await apiService.postPublicVote(
-                      PublicVote(isYes: false, pollID: poll.id),
-                    );
+                    if (poll.isPrivate) {
+                      await apiService.postVote(
+                        Vote(pollID: poll.id, userID: user.uid, isYes: false),
+                      );
+                    } else {
+                      await apiService.postPublicVote(
+                        PublicVote(isYes: false, pollID: poll.id),
+                      );
+                    }
                   },
                   child: Text(
                     "NO",

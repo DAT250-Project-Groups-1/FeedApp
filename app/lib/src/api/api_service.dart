@@ -2,6 +2,7 @@ import 'package:app/src/api/repository.dart';
 import 'package:app/src/models/poll.dart';
 import 'package:app/src/models/public_vote.dart';
 import 'package:app/src/models/user.dart';
+import 'package:app/src/models/vote.dart';
 import 'package:flutter/material.dart';
 
 class ApiService with ChangeNotifier {
@@ -25,6 +26,10 @@ class ApiService with ChangeNotifier {
 
   postPublicVote(PublicVote vote) async {
     await _repository.postPublicVote(vote);
+  }
+
+  postVote(Vote vote) async {
+    await _repository.postVote(vote);
   }
 
   getUsers() async {
