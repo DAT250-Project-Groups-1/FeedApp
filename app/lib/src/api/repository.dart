@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:app/src/models/poll.dart';
+import 'package:app/src/models/public_vote.dart';
 import 'package:app/src/models/user.dart';
+import 'package:app/src/models/vote.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +16,10 @@ class Repository {
   }
 
   Future<void> postUser() async {
-    await http.post('$API_URL/users',
-        headers: {"Authorization": "Bearer ${await token}"});
+    await http.post(
+      '$API_URL/users',
+      headers: {"Authorization": "Bearer ${await token}"},
+    );
   }
 
   Future<List<Poll>> getPublicPolls() async {
@@ -23,6 +27,29 @@ class Repository {
     return (json.decode(res.body) as List)
         .map((p) => Poll.fromJson(p))
         .toList();
+  }
+
+  postPublicVote(PublicVote publicVote) async {
+    await http.post(
+      '$API_URL/public/vote',
+      body: publicVote.toJson(),
+    );
+  }
+
+  postVote(Vote vote) async {
+    await http.post(
+      '$API_URL/votes',
+      body: vote.toJson(),
+      headers: {"Authorization": "Bearer ${await token}"},
+    );
+  }
+
+  Future<Poll> getPoll(String code) async {
+    var res = await http.get(
+      '$API_URL/polls/$code',
+      headers: {"Authorization": "Bearer ${await token}"},
+    );
+    return Poll.fromJson(json.decode(res.body));
   }
 
   Future<List<User>> getUsers() async {

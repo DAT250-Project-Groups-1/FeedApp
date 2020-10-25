@@ -45,7 +45,15 @@ func main() {
 	polls.Use(middleware.Auth)
 	{
 		polls.POST("", controllers.PostPoll)
+		polls.GET("/:code", controllers.GetPoll)
 	}
+
+	votes := router.Group("/votes")
+	votes.Use(middleware.Auth)
+	{
+		votes.POST("", controllers.PostVote)
+	}
+
 
 	public := router.Group("/public")
 	{

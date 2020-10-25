@@ -1,20 +1,35 @@
 import 'package:app/src/api/repository.dart';
 import 'package:app/src/models/poll.dart';
+import 'package:app/src/models/public_vote.dart';
 import 'package:app/src/models/user.dart';
+import 'package:app/src/models/vote.dart';
 import 'package:flutter/material.dart';
 
 class ApiService with ChangeNotifier {
-  final _repository = new Repository();
+  final _repository = Repository();
   var _polls = List<Poll>();
   var _users = List<User>();
 
   List<Poll> get polls => _polls;
-  List<User> get users=> _users;
+
+  List<User> get users => _users;
 
   getPublicPolls() async {
     var polls = await _repository.getPublicPolls();
     _polls = polls;
     notifyListeners();
+  }
+
+  Future<Poll> getPoll(String code) async {
+    return await _repository.getPoll(code);
+  }
+
+  postPublicVote(PublicVote vote) async {
+    await _repository.postPublicVote(vote);
+  }
+
+  postVote(Vote vote) async {
+    await _repository.postVote(vote);
   }
 
   getUsers() async {
