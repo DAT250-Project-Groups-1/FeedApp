@@ -1,7 +1,9 @@
 import 'package:app/src/api/api_service.dart';
 import 'package:app/src/auth/auth_service.dart';
+import 'package:app/src/models/poll.dart';
 import 'package:app/src/views/dialogs/poll_dialog.dart';
 import 'package:app/src/widgets/poll_list.dart';
+import 'package:app/src/widgets/poll_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,7 @@ class PublicPolls extends StatefulWidget {
 
 class _PublicPollsState extends State<PublicPolls> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  Poll searched;
 
   Future<void> _showPollDialog(
       BuildContext context, Future<Null> Function(String code) getPoll) async {
@@ -34,15 +37,24 @@ class _PublicPollsState extends State<PublicPolls> {
     ThemeData themeData = Theme.of(context);
 
     _getPoll(String code) async {
-      try {
-        var poll = await apiService.getPoll(code);
-        //TODO Display poll
-      } catch (e) {
-        _scaffoldKey.currentState.showSnackBar(
-          SnackBar(
-            content: Text("No polls with given code"),
-          ),
-        );
+      if (authService.status == Status.Authenticated) {
+        try {
+          var poll = await apiService.getPoll(code);
+          setState(() {
+            searched = poll;
+          });
+        } catch (e) {
+          print(e);
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("No polls with given code"),
+            ),
+          );
+        }
+      } else {
+        setState(() {
+          searched = apiService.polls.firstWhere((e) => e.code == code);
+        });
       }
     }
 
@@ -74,7 +86,7 @@ class _PublicPollsState extends State<PublicPolls> {
           await _showPollDialog(context, _getPoll);
         },
       ),
-      body: PollList(),
+      body: searched == null ? PollList() : PollTile(searched),
     );
   }
 }

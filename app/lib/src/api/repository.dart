@@ -34,7 +34,8 @@ class Repository {
   }
 
   Future<Poll> getPoll(String code) async {
-    var res = await http.get('$API_URL/public/polls/$code');
+    var res = await http.get('$API_URL/polls/$code',
+        headers: {"Authorization": "Bearer ${await token}"});
     return Poll.fromJson(json.decode(res.body));
   }
 

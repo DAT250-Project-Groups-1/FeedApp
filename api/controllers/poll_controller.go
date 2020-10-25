@@ -37,7 +37,7 @@ func GetPoll(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var poll models.Poll
 
-	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "false").Find(&poll)
+	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Find(&poll)
 
 	if res.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
