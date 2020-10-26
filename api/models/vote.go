@@ -1,9 +1,7 @@
 package models
 
-// Vote represent a vote from a user in the application
+// Vote represents a vote without login needed
 type Vote struct {
-	ID     int
-	IsYes  bool
-	UserID string
-	PollID int
+	IsYes  *bool `json:"IsYes" binding:"required"`
+	PollID int   `json:"PollID" binding:"required"`
 }

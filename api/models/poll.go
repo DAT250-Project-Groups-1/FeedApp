@@ -11,6 +11,6 @@ type Poll struct {
 	Code      string
 	IsPrivate bool
 	UserID    string
-	Votes     []Vote
+	Votes     []UserVote
 	IotVotes  []IotVotes
 }
