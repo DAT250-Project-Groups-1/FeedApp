@@ -3,7 +3,7 @@ import 'package:app/src/widgets/my_poll_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PollList extends StatelessWidget {
+class MyPollList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ApiService>(

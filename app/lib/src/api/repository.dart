@@ -55,6 +55,16 @@ class Repository {
     return Poll.fromJson(json.decode(res.body));
   }
 
+  deletePoll(Poll poll) async {
+    var uid = poll.id;
+    await http.delete(
+      '$API_URL/polls/$uid',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+      },
+    );
+  }
+
   Future<List<Poll>> getUserPolls() async {
     var res = await http.get('$API_URL/polls',
         headers: {"Authorization": "Bearer ${await token}"});

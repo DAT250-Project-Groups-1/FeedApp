@@ -37,6 +37,10 @@ class ApiService with ChangeNotifier {
     await _repository.postVote(vote);
   }
 
+  void deletePoll(Poll poll) async {
+    await _repository.deletePoll(poll);
+  }
+
   void getUsers() async {
     var users = await _repository.getUsers();
     _users = users;

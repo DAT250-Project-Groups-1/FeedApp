@@ -61,3 +61,19 @@ func GetUserPolls(c *gin.Context) {
 
 	c.JSON(http.StatusOK, polls)
 }
+
+// Delete a poll
+func DeletePoll(c *gin.Context) {
+
+	db := c.MustGet("db").(*gorm.DB)
+
+	var poll models.Poll
+	if err := db.Where("id = ?", c.Param("id")).First(&poll).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	db.Delete(&poll)
+
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}
