@@ -5,11 +5,11 @@ import (
 	"dat250-project-group-1/feedapp/controllers"
 	"dat250-project-group-1/feedapp/middleware"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-
 	// Initialize database connection
 	db := config.InitDatabase()
 
@@ -19,13 +19,17 @@ func main() {
 	// Initialize a gin router engine
 	router := gin.Default()
 
+	// Serve flutter web
+	router.Use(static.Serve("/", static.LocalFile("./static", true)))
+
+	// Enable cors support
+	router.Use(middleware.Cors)
+
 	// Registrer middlewares
 	router.Use(func(c *gin.Context) {
 		c.Set("db", db)
 		c.Set("auth", auth)
 	})
-
-	router.Use(middleware.Cors)
 
 	// Registrer routes
 	admin := router.Group("/admin")
@@ -55,7 +59,6 @@ func main() {
 	{
 		votes.POST("", controllers.PostVote)
 	}
-
 
 	public := router.Group("/public")
 	{

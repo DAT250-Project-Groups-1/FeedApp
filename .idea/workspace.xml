@@ -2,19 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f09b8317-9e79-4d11-b301-d2d88d613666" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/lib/src/views/dialogs/delete_dialog.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloudbuild.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/config/firebase.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/config/firebase.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/poll_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/poll_controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/api/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ios/Flutter/Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/app/ios/Flutter/Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ios/Flutter/Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/app/ios/Flutter/Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/api/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/api/api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/api/repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/api/repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/views/my_polls.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/views/my_polls.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/widgets/my_poll_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/widgets/my_poll_list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/widgets/my_poll_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/widgets/my_poll_tile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/src/widgets/poll_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/src/widgets/poll_tile.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,7 +26,7 @@
         <entry file="file://$PROJECT_DIR$/app/lib/src/api/repository.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="58" column="22" lean-forward="true" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+              <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -41,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/app/lib/src/views/dialogs/delete_dialog.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="25" column="16" lean-forward="true" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+              <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -58,14 +52,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/lib/src/widgets/my_poll_tile.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+            <state relative-caret-position="570">
+              <caret line="38" column="25" selection-start-line="38" selection-start-column="25" selection-end-line="38" selection-end-column="25" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/go.mod">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -105,6 +108,7 @@
         <option value="$PROJECT_DIR$/app/lib/src/api/repository.dart" />
         <option value="$PROJECT_DIR$/api/controllers/poll_controller.go" />
         <option value="$PROJECT_DIR$/app/lib/src/widgets/my_poll_tile.dart" />
+        <option value="$PROJECT_DIR$/api/go.mod" />
       </list>
     </option>
   </component>
@@ -248,18 +252,18 @@
       <workItem from="1603282280212" duration="1134000" />
       <workItem from="1603374413808" duration="1915000" />
       <workItem from="1603464523643" duration="6403000" />
-      <workItem from="1603704760269" duration="9158000" />
+      <workItem from="1603704760269" duration="9403000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20367000" />
+    <option name="totallyTimeSpent" value="20612000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Build Variants" order="3" side_tool="true" />
@@ -281,7 +285,7 @@
       <window_info anchor="bottom" id="Logcat" order="10" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Version Control" order="12" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="13" visible="true" weight="0.32891566" />
+      <window_info anchor="bottom" id="Terminal" order="13" visible="true" weight="0.32891566" />
       <window_info anchor="bottom" id="Dart Analysis" order="14" weight="0.32891566" />
       <window_info anchor="bottom" id="Messages" order="15" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -374,9 +378,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/pubspec.yaml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/go.mod">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -557,14 +558,14 @@
     <entry file="file://$PROJECT_DIR$/app/lib/src/api/repository.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="58" column="22" lean-forward="true" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+          <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/src/views/dialogs/delete_dialog.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="16" lean-forward="true" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -573,11 +574,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/lib/src/widgets/my_poll_tile.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        <state relative-caret-position="570">
+          <caret line="38" column="25" selection-start-line="38" selection-start-column="25" selection-end-line="38" selection-end-column="25" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/go.mod">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
         </state>
       </provider>
     </entry>
