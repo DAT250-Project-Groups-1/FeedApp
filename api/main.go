@@ -46,6 +46,7 @@ func main() {
 	{
 		polls.POST("", controllers.PostPoll)
 		polls.GET("/:code", controllers.GetPoll)
+		polls.GET("", controllers.GetUserPolls)
 	}
 
 	votes := router.Group("/votes")

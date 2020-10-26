@@ -23,6 +23,12 @@ class ApiService with ChangeNotifier {
     return await _repository.getPoll(code);
   }
 
+  getUserPolls() async {
+    var polls = await _repository.getUserPolls();
+    _polls = polls;
+    notifyListeners();
+  }
+
   void postPublicVote(Vote vote) async {
     await _repository.postPublicVote(vote);
   }

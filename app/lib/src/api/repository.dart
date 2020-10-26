@@ -55,6 +55,14 @@ class Repository {
     return Poll.fromJson(json.decode(res.body));
   }
 
+  Future<List<Poll>> getUserPolls() async {
+    var res = await http.get('$API_URL/polls',
+        headers: {"Authorization": "Bearer ${await token}"});
+    return (json.decode(res.body) as List)
+        .map((p) => Poll.fromJson(p))
+        .toList();
+  }
+
   Future<List<User>> getUsers() async {
     var res = await http.get('$API_URL/admin/users',
         headers: {"Authorization": "Bearer ${await token}"});

@@ -17,7 +17,7 @@ require (
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
 	golang.org/x/net v0.0.0-20201020065357-d65d470038a5 // indirect
 	golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13 // indirect
-	google.golang.org/api v0.33.0 // indirect
+	google.golang.org/api v0.33.0
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gorm.io/driver/postgres v1.0.3
