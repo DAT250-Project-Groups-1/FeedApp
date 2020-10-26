@@ -17,19 +17,19 @@ func Auth(c *gin.Context) {
 	bearer := strings.TrimSpace(strings.Replace(authorization, "Bearer", "", 1))
 
 	if bearer == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "token not available"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "token not available"})
 		return
 	}
 
 	token, err := firebase.VerifyIDToken(context.Background(), bearer)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid token"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid token"})
 		return
 	}
 
 	user, err := firebase.GetUser(context.Background(), token.UID)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user not authorized"})
 		return
 	}
 

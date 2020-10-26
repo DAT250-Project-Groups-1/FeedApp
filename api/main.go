@@ -23,7 +23,7 @@ func main() {
 	router.Use(static.Serve("/", static.LocalFile("./static", true)))
 
 	// Enable cors support
-	router.Use(middleware.Cors)
+	//router.Use(middleware.Cors)
 
 	// Registrer middlewares
 	router.Use(func(c *gin.Context) {
