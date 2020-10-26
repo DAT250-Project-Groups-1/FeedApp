@@ -8,7 +8,7 @@ WORKDIR /app
 COPY /app/pubspec.yaml .
 RUN flutter pub get
 COPY /app .
-RUN flutter build web
+RUN flutter build web --dart-define=API_URL=""
 
 FROM golang:alpine
 
