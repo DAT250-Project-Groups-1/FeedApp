@@ -17,16 +17,21 @@ class AuthService with ChangeNotifier {
   final _repository = new Repository();
   Status _status = Status.Uninitialized;
   String _errorMessage = "";
+  bool _isAdmin = false;
 
   Status get status => _status;
+
   String get errorMessage => _errorMessage;
+
+  bool get isAdmin => _isAdmin;
 
   AuthService() {
     FirebaseAuth.instance.userChanges().listen((User user) async {
       if (user != null) {
         var prefs = await SharedPreferences.getInstance();
-        var token = await user.getIdToken();
-        prefs.setString('token', token);
+        var token = await user.getIdTokenResult(true);
+        _isAdmin = token.claims['admin'] ?? false;
+        prefs.setString('token', token.token);
         _repository.postUser();
         changeStatus(Status.Authenticated);
       } else {

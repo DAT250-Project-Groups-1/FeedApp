@@ -1,8 +1,10 @@
+import 'package:app/src/auth/auth_service.dart';
 import 'package:app/src/views/my_polls.dart';
 import 'package:app/src/views/public_polls.dart';
 import 'package:app/src/views/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,6 +28,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = context.watch<AuthService>();
+
     return Scaffold(
       body: _views[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -38,10 +42,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.analytics),
             label: "My polls",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: "Users",
-          ),
+          if (authService.isAdmin)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: "Users",
+            ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
