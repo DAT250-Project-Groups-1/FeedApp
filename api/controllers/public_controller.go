@@ -24,8 +24,8 @@ func GetPublicPolls(c *gin.Context) {
 
 // PostPublicVote adds a public vote to a public poll
 func PostPublicVote(c *gin.Context) {
-	var pv models.PublicVote
-	err := c.ShouldBind(&pv)
+	var vote models.Vote
+	err := c.ShouldBind(&vote)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -33,13 +33,13 @@ func PostPublicVote(c *gin.Context) {
 
 	var poll models.Poll
 	db := c.MustGet("db").(*gorm.DB)
-	res := db.Where("is_private = ?", "false").Find(&poll, pv.PollID)
+	res := db.Where("is_private = ?", "false").Find(&poll, vote.PollID)
 	if res.RowsAffected == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("no poll with id: %d", pv.PollID)})
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("no poll with id: %d", vote.PollID)})
 		return
 	}
 
-	if pv.IsYes {
+	if *vote.IsYes {
 		poll.CountYes++
 	} else {
 		poll.CountNo++

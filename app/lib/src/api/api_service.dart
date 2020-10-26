@@ -1,8 +1,7 @@
 import 'package:app/src/api/repository.dart';
 import 'package:app/src/models/poll.dart';
-import 'package:app/src/models/public_vote.dart';
-import 'package:app/src/models/user.dart';
 import 'package:app/src/models/vote.dart';
+import 'package:app/src/models/user.dart';
 import 'package:flutter/material.dart';
 
 class ApiService with ChangeNotifier {
@@ -14,7 +13,7 @@ class ApiService with ChangeNotifier {
 
   List<User> get users => _users;
 
-  getPublicPolls() async {
+  void getPublicPolls() async {
     var polls = await _repository.getPublicPolls();
     _polls = polls;
     notifyListeners();
@@ -24,15 +23,15 @@ class ApiService with ChangeNotifier {
     return await _repository.getPoll(code);
   }
 
-  postPublicVote(PublicVote vote) async {
+  void postPublicVote(Vote vote) async {
     await _repository.postPublicVote(vote);
   }
 
-  postVote(Vote vote) async {
+  void postVote(Vote vote) async {
     await _repository.postVote(vote);
   }
 
-  getUsers() async {
+  void getUsers() async {
     var users = await _repository.getUsers();
     _users = users;
     notifyListeners();

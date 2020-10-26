@@ -7,5 +7,5 @@ type User struct {
 	Email   string
 	IsAdmin bool
 	Polls   []Poll
-	Votes   []Vote
+	Votes   []UserVote
 }
