@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"context"
 	"dat250-project-group-1/feedapp/models"
 	"net/http"
 
@@ -46,10 +47,19 @@ func MakeAdmin(c *gin.Context) {
 	}
 
 	var userToEdit models.User
-	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin",true)
+	res = db.Model(&userToEdit).Where("ID = ?", c.Param("uid")).Update("IsAdmin", true)
 
 	if res.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "count not edit user"})
+		return
+	}
+
+	auth := c.MustGet("auth").(*auth.Client)
+
+	claims := map[string]interface{}{"admin": true}
+	err := auth.SetCustomUserClaims(context.Background(), userRecord.UID, claims)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error setting custom claim"})
 		return
 	}
 

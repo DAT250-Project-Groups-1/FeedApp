@@ -16,8 +16,8 @@ class _PublicPollsState extends State<PublicPolls> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   Poll searched;
 
-  Future<void> _showPollDialog(
-      BuildContext context, Future<Null> Function(String code) getPoll) async {
+  Future<void> _showPollDialog(BuildContext context,
+      Future<Null> Function(String code) getPoll) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -75,6 +75,13 @@ class _PublicPollsState extends State<PublicPolls> {
               ),
               onPressed: () {
                 authService.changeStatus(Status.Login);
+              },
+            ),
+          if (authService.status == Status.Authenticated)
+            MaterialButton(
+              child: Text("Sign out"),
+              onPressed: () async {
+                await authService.signOut();
               },
             )
         ],
