@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"dat250-project-group-1/feedapp/models"
+	"dat250-project-group-1/feedapp/publisher"
 	"net/http"
 
 	"firebase.google.com/go/auth"
@@ -45,4 +46,13 @@ func GetPoll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, poll)
+}
+
+// EndPoll posts a poll to message broker
+func EndPoll(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var poll models.Poll
+
+	db.Where("id = ?", c.Param("id")).Find(&poll)
+	publisher.Publish(poll)
 }

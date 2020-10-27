@@ -4,6 +4,7 @@ import (
 	"dat250-project-group-1/feedapp/config"
 	"dat250-project-group-1/feedapp/controllers"
 	"dat250-project-group-1/feedapp/middleware"
+	"dat250-project-group-1/feedapp/subscriber"
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -46,10 +47,11 @@ func main() {
 	}
 
 	polls := router.Group("/polls")
-	polls.Use(middleware.Auth)
+	//polls.Use(middleware.Auth)
 	{
 		polls.POST("", controllers.PostPoll)
 		polls.GET("/:code", controllers.GetPoll)
+		polls.POST("/end/:id", controllers.EndPoll)
 	}
 
 	votes := router.Group("/votes")
@@ -63,6 +65,9 @@ func main() {
 		public.GET("/polls", controllers.GetPublicPolls)
 		public.POST("/vote", controllers.PostPublicVote)
 	}
+
+	// Listen to messages from message broker
+	go subscriber.Subscribe()
 
 	// Start the server on port 8080
 	router.Run()
