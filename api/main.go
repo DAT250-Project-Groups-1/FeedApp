@@ -47,11 +47,12 @@ func main() {
 	}
 
 	polls := router.Group("/polls")
-	//polls.Use(middleware.Auth)
+	polls.Use(middleware.Auth)
 	{
 		polls.POST("", controllers.PostPoll)
 		polls.GET("/:code", controllers.GetPoll)
-		polls.POST("/end/:id", controllers.EndPoll)
+		polls.PUT("/open/:id", controllers.OpenPoll)
+		polls.PUT("/end/:id", controllers.EndPoll)
 		polls.GET("", controllers.GetUserPolls)
 		polls.DELETE("/:id", controllers.DeletePoll)
 	}
@@ -65,6 +66,7 @@ func main() {
 	public := router.Group("/public")
 	{
 		public.GET("/polls", controllers.GetPublicPolls)
+		public.GET("polls/:code", controllers.GetPublicPoll)
 		public.POST("/vote", controllers.PostPublicVote)
 	}
 

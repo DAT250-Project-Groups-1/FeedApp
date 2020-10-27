@@ -38,7 +38,7 @@ func GetPoll(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var poll models.Poll
 
-	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Find(&poll)
+	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Where("open = ?", "true").Find(&poll)
 
 	if res.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
@@ -48,13 +48,41 @@ func GetPoll(c *gin.Context) {
 	c.JSON(http.StatusOK, poll)
 }
 
-// EndPoll posts a poll to message broker
+// OpenPoll opens a poll
+func OpenPoll(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var poll models.Poll
+
+	res := db.Where("id = ?", c.Param("id")).Find(&poll)
+	if res.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
+		return
+	}
+
+	poll.Open = true
+
+	res = db.Save(&poll)
+
+	c.JSON(http.StatusOK, poll)
+}
+
+// EndPoll ends a poll and posts to message broker
 func EndPoll(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var poll models.Poll
 
-	db.Where("id = ?", c.Param("id")).Find(&poll)
+	res := db.Where("id = ?", c.Param("id")).Find(&poll)
+	if res.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
+		return
+	}
+
+	poll.Open = false
+
+	res = db.Save(&poll)
 	publisher.Publish(poll)
+
+	c.JSON(http.StatusOK, poll)
 }
 
 // GetUserPolls gets all polls a user has made

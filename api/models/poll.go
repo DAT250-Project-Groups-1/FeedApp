@@ -4,8 +4,7 @@ package models
 type Poll struct {
 	ID        int
 	Question  string
-	FromDate  string
-	ToDate    string
+	Open      bool
 	CountYes  int
 	CountNo   int
 	Code      string

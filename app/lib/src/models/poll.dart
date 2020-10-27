@@ -1,21 +1,19 @@
 class Poll {
   final int id;
   final String question;
+  final bool open;
   final int countYes;
   final int countNo;
-  final DateTime fromDate;
-  final DateTime toDate;
   final String code;
-  final String userId;
   final bool isPrivate;
+  final String userId;
   final dynamic votes;
   final dynamic iotVotes;
 
   Poll.fromJson(Map<String, dynamic> parsedJson)
       : id = parsedJson['ID'],
         question = parsedJson['Question'],
-        fromDate = DateTime.parse(parsedJson['FromDate']),
-        toDate = DateTime.parse(parsedJson['ToDate']),
+        open = parsedJson['Open'],
         countYes = parsedJson['CountYes'],
         countNo = parsedJson['CountNo'],
         code = parsedJson['Code'],
