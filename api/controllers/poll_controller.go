@@ -3,6 +3,7 @@ package controllers
 import (
 	"dat250-project-group-1/feedapp/models"
 	"dat250-project-group-1/feedapp/publisher"
+	"fmt"
 	"net/http"
 
 	"firebase.google.com/go/auth"
@@ -60,6 +61,7 @@ func OpenPoll(c *gin.Context) {
 	}
 
 	poll.Open = true
+	http.Post(fmt.Sprintf("https://dweet.io/dweet/for/feedapp-gruppe1?poll=%d&status=open", poll.ID), "text/plain", nil)
 
 	res = db.Save(&poll)
 
@@ -78,6 +80,7 @@ func EndPoll(c *gin.Context) {
 	}
 
 	poll.Open = false
+	http.Post(fmt.Sprintf("https://dweet.io/dweet/for/feedapp-gruppe1?poll=%d&status=end", poll.ID), "text/plain", nil)
 
 	res = db.Save(&poll)
 	publisher.Publish(poll)
