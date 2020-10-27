@@ -8,8 +8,7 @@ class MyPollTile extends StatelessWidget {
   final Poll poll;
   MyPollTile(this.poll);
 
-  void showDeleteDialog(BuildContext context, Future<Null> Function(Poll poll)
-  deletePoll) {
+  void showDeleteDialog(context, Future<Null> Function(Poll poll) deletePoll) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -23,19 +22,33 @@ class MyPollTile extends StatelessWidget {
     ApiService apiService = context.watch<ApiService>();
 
     _deletePoll(Poll p) async {
-      try {
-        var poll = apiService.deletePoll(p);
-      } catch (e) {
-      }
+      apiService.deletePoll(p);
     }
-    
+
     return Container(
       child: Card(
         child: ListTile(
-          title: Text(poll.question),
+          title: Text(
+            poll.question,
+            style: poll.open
+                ? null
+                : TextStyle(
+                    color: Colors.grey,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  poll.open ? Icons.pause : Icons.play_arrow,
+                  size: 20.0,
+                ),
+                onPressed: poll.open
+                    ? () => apiService.endPoll(poll)
+                    : () => apiService.openPoll(poll),
+              ),
               IconButton(
                 icon: Icon(
                   Icons.delete_outline,

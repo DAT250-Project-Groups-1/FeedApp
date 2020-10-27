@@ -66,6 +66,28 @@ class Repository {
     );
   }
 
+  Future<Poll> openPoll(Poll poll) async {
+    var uid = poll.id;
+    var res = await http.put(
+      '$API_URL/polls/open/$uid',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+      },
+    );
+    return Poll.fromJson(json.decode(res.body));
+  }
+
+  Future<Poll> endPoll(Poll poll) async {
+    var uid = poll.id;
+    var res = await http.put(
+      '$API_URL/polls/end/$uid',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+      },
+    );
+    return Poll.fromJson(json.decode(res.body));
+  }
+
   Future<List<Poll>> getUserPolls() async {
     var res = await http.get('$API_URL/polls',
         headers: {"Authorization": "Bearer ${await token}"});

@@ -13,13 +13,28 @@ import (
 func GetPublicPolls(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var polls []models.Poll
-	res := db.Where("is_private = ?", "false").Find(&polls)
+	res := db.Where("is_private = ?", "false").Where("open = ?", "true").Find(&polls)
 	if res.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": res.Error.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, polls)
+}
+
+// GetPublicPoll gets public poll from poll code
+func GetPublicPoll(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var poll models.Poll
+
+	res := db.Where("Code = ?", c.Param("code")).Where("open = ?", "true").Find(&poll)
+
+	if res.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
+		return
+	}
+
+	c.JSON(http.StatusOK, poll)
 }
 
 // PostPublicVote adds a public vote to a public poll

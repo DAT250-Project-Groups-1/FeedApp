@@ -18,13 +18,13 @@ COPY api/go.mod .
 COPY api/go.sum .
 RUN go mod download
 
+ENV GIN_MODE=release
+
 COPY api .
 
 RUN go build -o main .
 
 WORKDIR /dist
-
-#ENV GOOGLE_APPLICATION_CREDENTIALS=/build/service_account.json
 
 RUN cp /build/main .
 COPY --from=build /app/build/web ./static

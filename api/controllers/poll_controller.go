@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"dat250-project-group-1/feedapp/models"
+	"dat250-project-group-1/feedapp/publisher"
+	"fmt"
 	"net/http"
 
 	"firebase.google.com/go/auth"
@@ -37,12 +39,51 @@ func GetPoll(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var poll models.Poll
 
-	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Find(&poll)
+	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Where("open = ?", "true").Find(&poll)
 
 	if res.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
 		return
 	}
+
+	c.JSON(http.StatusOK, poll)
+}
+
+// OpenPoll opens a poll
+func OpenPoll(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var poll models.Poll
+
+	res := db.Where("id = ?", c.Param("id")).Find(&poll)
+	if res.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
+		return
+	}
+
+	poll.Open = true
+	http.Post(fmt.Sprintf("https://dweet.io/dweet/for/feedapp-gruppe1?poll=%d&status=open", poll.ID), "text/plain", nil)
+
+	res = db.Save(&poll)
+
+	c.JSON(http.StatusOK, poll)
+}
+
+// EndPoll ends a poll and posts to message broker
+func EndPoll(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	var poll models.Poll
+
+	res := db.Where("id = ?", c.Param("id")).Find(&poll)
+	if res.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
+		return
+	}
+
+	poll.Open = false
+	http.Post(fmt.Sprintf("https://dweet.io/dweet/for/feedapp-gruppe1?poll=%d&status=end", poll.ID), "text/plain", nil)
+
+	res = db.Save(&poll)
+	publisher.Publish(poll)
 
 	c.JSON(http.StatusOK, poll)
 }
@@ -62,7 +103,7 @@ func GetUserPolls(c *gin.Context) {
 	c.JSON(http.StatusOK, polls)
 }
 
-// Delete a poll
+// DeletePoll deletes a poll
 func DeletePoll(c *gin.Context) {
 
 	db := c.MustGet("db").(*gorm.DB)
