@@ -6,8 +6,8 @@ import 'package:app/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const API_URL = "http://localhost:8080";
-//const API_URL = "";
+const API_URL =
+    String.fromEnvironment('API_URL', defaultValue: 'http://localhost:8080');
 
 class Repository {
   Future<String> get token async {
@@ -54,6 +54,24 @@ class Repository {
       headers: {"Authorization": "Bearer ${await token}"},
     );
     return Poll.fromJson(json.decode(res.body));
+  }
+
+  deletePoll(Poll poll) async {
+    var uid = poll.id;
+    await http.delete(
+      '$API_URL/polls/$uid',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+      },
+    );
+  }
+
+  Future<List<Poll>> getUserPolls() async {
+    var res = await http.get('$API_URL/polls',
+        headers: {"Authorization": "Bearer ${await token}"});
+    return (json.decode(res.body) as List)
+        .map((p) => Poll.fromJson(p))
+        .toList();
   }
 
   Future<List<User>> getUsers() async {

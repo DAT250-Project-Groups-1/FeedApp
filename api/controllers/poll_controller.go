@@ -56,3 +56,34 @@ func EndPoll(c *gin.Context) {
 	db.Where("id = ?", c.Param("id")).Find(&poll)
 	publisher.Publish(poll)
 }
+
+// GetUserPolls gets all polls a user has made
+func GetUserPolls(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
+
+	db := c.MustGet("db").(*gorm.DB)
+	var polls []models.Poll
+	res := db.Where("user_id = ?", userRecord.UID).Find(&polls)
+	if res.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": res.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, polls)
+}
+
+// DeletePoll deletes a poll
+func DeletePoll(c *gin.Context) {
+
+	db := c.MustGet("db").(*gorm.DB)
+
+	var poll models.Poll
+	if err := db.Where("id = ?", c.Param("id")).First(&poll).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	db.Delete(&poll)
+
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}

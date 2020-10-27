@@ -52,6 +52,8 @@ func main() {
 		polls.POST("", controllers.PostPoll)
 		polls.GET("/:code", controllers.GetPoll)
 		polls.POST("/end/:id", controllers.EndPoll)
+		polls.GET("", controllers.GetUserPolls)
+		polls.DELETE("/:id", controllers.DeletePoll)
 	}
 
 	votes := router.Group("/votes")
