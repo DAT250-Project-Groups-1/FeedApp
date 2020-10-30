@@ -25,6 +25,17 @@ class Repository {
     );
   }
 
+  Future<void> postPoll(Poll poll) async {
+    await http.post(
+      '$API_URL/polls',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(poll)
+    );
+  }
+
   Future<List<Poll>> getPublicPolls() async {
     var res = await http.get('$API_URL/public/polls');
     return (json.decode(res.body) as List)
