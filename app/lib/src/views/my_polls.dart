@@ -11,7 +11,6 @@ class MyPolls extends StatefulWidget {
 }
 
 class _MyPollsState extends State<MyPolls> {
-
   void showNewPollDialog(context, Future<Null> Function(Poll poll) postPoll) {
     showDialog(
       context: context,
@@ -32,7 +31,16 @@ class _MyPollsState extends State<MyPolls> {
     ApiService apiService = context.watch<ApiService>();
 
     _deletePoll(Poll p) async {
-      apiService.postPoll(p);
+      try {
+        apiService.postPoll(p);
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Successfully submitted poll"),
+        ));
+      }catch (e){
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Successfully submitted poll"),
+        ));
+      }
     }
 
     return Scaffold(

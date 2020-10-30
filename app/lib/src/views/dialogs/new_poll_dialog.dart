@@ -69,7 +69,6 @@ class _NewPollDialogState extends State<NewPollDialog> {
                         // otherwise.
                         if (_formKey.currentState.validate()) {
                           // Post poll to db
-
                           widget.postPoll(Poll(question:
                           textController
                               .text,
@@ -77,10 +76,8 @@ class _NewPollDialogState extends State<NewPollDialog> {
                                   .string(10), isPrivate: isPrivate, userId:
                               null, votes: null, iotVotes: null));
 
-                          print("Question: " + textController.text);
-                          print("Private: " + isPrivate.toString());
-                          print("Open: " + isOpen.toString());
-                          print("Code: " + random.string(10));
+
+                          Navigator.pop(context);
 
                         }
                       },
