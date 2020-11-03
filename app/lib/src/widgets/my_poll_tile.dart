@@ -3,6 +3,7 @@ import 'package:app/src/views/dialogs/delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/src/api/api_service.dart';
+import 'package:app/src/views/dialogs/code_dialog.dart';
 
 class MyPollTile extends StatelessWidget {
   final Poll poll;
@@ -13,6 +14,15 @@ class MyPollTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return DeleteDialog(poll, deletePoll);
+      },
+    );
+  }
+
+  void showCodeDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CodeDialog(poll);
       },
     );
   }
@@ -28,6 +38,9 @@ class MyPollTile extends StatelessWidget {
     return Container(
       child: Card(
         child: ListTile(
+          onTap: () {
+            showCodeDialog(context);
+            },
           title: Text(
             poll.question,
             style: poll.open

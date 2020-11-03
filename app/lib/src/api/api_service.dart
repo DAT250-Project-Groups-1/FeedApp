@@ -33,6 +33,10 @@ class ApiService with ChangeNotifier {
     await _repository.postPublicVote(vote);
   }
 
+  void postPoll(Poll poll) async {
+    await _repository.postPoll(poll);
+  }
+
   void postVote(Vote vote) async {
     await _repository.postVote(vote);
   }
