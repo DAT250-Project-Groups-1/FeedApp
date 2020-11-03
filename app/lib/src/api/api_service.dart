@@ -8,10 +8,13 @@ class ApiService with ChangeNotifier {
   final _repository = Repository();
   var _polls = List<Poll>();
   var _users = List<User>();
+  User _user;
 
   List<Poll> get polls => _polls;
 
   List<User> get users => _users;
+
+  User get user => _user;
 
   void getPublicPolls() async {
     var polls = await _repository.getPublicPolls();
@@ -23,9 +26,9 @@ class ApiService with ChangeNotifier {
     return await _repository.getPoll(code);
   }
 
-  getUserPolls() async {
-    var polls = await _repository.getUserPolls();
-    _polls = polls;
+  getUser() async {
+    var user = await _repository.getUser();
+    _user = user;
     notifyListeners();
   }
 
@@ -35,6 +38,8 @@ class ApiService with ChangeNotifier {
 
   void postPoll(Poll poll) async {
     await _repository.postPoll(poll);
+    _user.polls.add(poll);
+    notifyListeners();
   }
 
   void postVote(Vote vote) async {
@@ -43,21 +48,21 @@ class ApiService with ChangeNotifier {
 
   void deletePoll(Poll poll) async {
     await _repository.deletePoll(poll);
-    _polls.remove(poll);
+    _user.polls.remove(poll);
     notifyListeners();
   }
 
   void openPoll(Poll poll) async {
     var updatedPoll = await _repository.openPoll(poll);
-    _polls.remove(poll);
-    _polls.add(updatedPoll);
+    _user.polls.remove(poll);
+    _user.polls.add(updatedPoll);
     notifyListeners();
   }
 
   void endPoll(Poll poll) async {
     var updatedPoll = await _repository.endPoll(poll);
-    _polls.remove(poll);
-    _polls.add(updatedPoll);
+    _user.polls.remove(poll);
+    _user.polls.add(updatedPoll);
     notifyListeners();
   }
 

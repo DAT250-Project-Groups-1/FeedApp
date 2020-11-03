@@ -26,14 +26,12 @@ class Repository {
   }
 
   Future<void> postPoll(Poll poll) async {
-    await http.post(
-      '$API_URL/polls',
-      headers: {
-        "Authorization": "Bearer ${await token}",
-        "Content-Type": "application/json"
-      },
-      body: json.encode(poll)
-    );
+    await http.post('$API_URL/polls',
+        headers: {
+          "Authorization": "Bearer ${await token}",
+          "Content-Type": "application/json"
+        },
+        body: json.encode(poll));
   }
 
   Future<List<Poll>> getPublicPolls() async {
@@ -99,12 +97,15 @@ class Repository {
     return Poll.fromJson(json.decode(res.body));
   }
 
-  Future<List<Poll>> getUserPolls() async {
-    var res = await http.get('$API_URL/polls',
-        headers: {"Authorization": "Bearer ${await token}"});
-    return (json.decode(res.body) as List)
-        .map((p) => Poll.fromJson(p))
-        .toList();
+  Future<User> getUser() async {
+    var res = await http.post(
+      '$API_URL/users',
+      headers: {
+        "Authorization": "Bearer ${await token}",
+        "Content-Type": "application/json"
+      },
+    );
+    return User.fromJson(json.decode(res.body));
   }
 
   Future<List<User>> getUsers() async {

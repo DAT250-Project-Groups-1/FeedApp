@@ -39,7 +39,7 @@ func GetPoll(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var poll models.Poll
 
-	res := db.Where("Code = ?", c.Param("code")).Where("is_private = ?", "true").Where("open = ?", "true").Find(&poll)
+	res := db.Where("Code = ?", c.Param("code")).Where("open = ?", "true").Find(&poll)
 
 	if res.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get poll"})
@@ -86,21 +86,6 @@ func EndPoll(c *gin.Context) {
 	publisher.Publish(poll)
 
 	c.JSON(http.StatusOK, poll)
-}
-
-// GetUserPolls gets all polls a user has made
-func GetUserPolls(c *gin.Context) {
-	userRecord := c.MustGet("user").(*auth.UserRecord)
-
-	db := c.MustGet("db").(*gorm.DB)
-	var polls []models.Poll
-	res := db.Where("user_id = ?", userRecord.UID).Find(&polls)
-	if res.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": res.Error.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, polls)
 }
 
 // DeletePoll deletes a poll

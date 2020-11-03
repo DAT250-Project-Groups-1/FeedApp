@@ -44,6 +44,7 @@ func main() {
 	users.Use(middleware.Auth)
 	{
 		users.POST("", controllers.PostUser)
+		users.GET("", controllers.GetUser)
 	}
 
 	polls := router.Group("/polls")
@@ -53,7 +54,6 @@ func main() {
 		polls.GET("/:code", controllers.GetPoll)
 		polls.PUT("/open/:id", controllers.OpenPoll)
 		polls.PUT("/end/:id", controllers.EndPoll)
-		polls.GET("", controllers.GetUserPolls)
 		polls.DELETE("/:id", controllers.DeletePoll)
 	}
 

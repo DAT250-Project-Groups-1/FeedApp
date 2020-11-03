@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:app/src/models/poll.dart';
 import 'package:faker/faker.dart';
 
-
 class NewPollDialog extends StatefulWidget {
   final Future<Null> Function(Poll poll) postPoll;
 
-  const NewPollDialog({ Key key, this.postPoll }): super(key: key);
+  const NewPollDialog({Key key, this.postPoll}) : super(key: key);
 
   @override
   _NewPollDialogState createState() => _NewPollDialogState();
@@ -69,16 +68,20 @@ class _NewPollDialogState extends State<NewPollDialog> {
                         // otherwise.
                         if (_formKey.currentState.validate()) {
                           // Post poll to db
-                          widget.postPoll(Poll(question:
-                          textController
-                              .text,
-                          open: isOpen, countYes: 0, countNo: 0, code: random
-                                  .string(10), isPrivate: isPrivate, userId:
-                              null, votes: null, iotVotes: null));
-
+                          widget.postPoll(
+                            Poll(
+                                question: textController.text,
+                                open: isOpen,
+                                countYes: 0,
+                                countNo: 0,
+                                code: faker.internet.userName(),
+                                isPrivate: isPrivate,
+                                userId: null,
+                                votes: null,
+                                iotVotes: null),
+                          );
 
                           Navigator.pop(context);
-
                         }
                       },
                       child: Text('Submit'),
