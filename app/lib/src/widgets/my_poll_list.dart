@@ -9,8 +9,8 @@ class MyPollList extends StatelessWidget {
     return Consumer<ApiService>(
       builder: (context, state, _) {
         return ListView.builder(
-          itemCount: state.polls.length,
-          itemBuilder: (context, i) => MyPollTile(state.polls[i]),
+          itemCount: state.user.polls.length,
+          itemBuilder: (context, i) => MyPollTile(state.user.polls[i]),
         );
       },
     );

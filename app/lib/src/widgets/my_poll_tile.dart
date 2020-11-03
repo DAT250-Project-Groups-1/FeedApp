@@ -40,7 +40,7 @@ class MyPollTile extends StatelessWidget {
         child: ListTile(
           onTap: () {
             showCodeDialog(context);
-            },
+          },
           title: Text(
             poll.question,
             style: poll.open
@@ -50,9 +50,20 @@ class MyPollTile extends StatelessWidget {
                     decoration: TextDecoration.lineThrough,
                   ),
           ),
+          subtitle: Text("Yes: " +
+              poll.countYes.toString() +
+              ", No: " +
+              poll.countNo.toString()),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  poll.isPrivate ? Icons.lock : Icons.lock_open,
+                  size: 20.0,
+                ),
+                onPressed: null,
+              ),
               IconButton(
                 icon: Icon(
                   poll.open ? Icons.pause : Icons.play_arrow,

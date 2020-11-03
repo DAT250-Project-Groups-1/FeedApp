@@ -23,7 +23,7 @@ class _MyPollsState extends State<MyPolls> {
   @override
   void initState() {
     super.initState();
-    context.read<ApiService>().getUserPolls();
+    context.read<ApiService>().getUser();
   }
 
   @override
@@ -36,7 +36,7 @@ class _MyPollsState extends State<MyPolls> {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("Successfully submitted poll"),
         ));
-      }catch (e){
+      } catch (e) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text("Successfully submitted poll"),
         ));
@@ -53,7 +53,9 @@ class _MyPollsState extends State<MyPolls> {
           showNewPollDialog(context, _deletePoll);
         },
       ),
-      body: MyPollList(),
+      body: apiService.user != null
+          ? MyPollList()
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

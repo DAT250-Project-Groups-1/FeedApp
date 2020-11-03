@@ -16,8 +16,8 @@ class _PublicPollsState extends State<PublicPolls> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   Poll searched;
 
-  Future<void> _showPollDialog(BuildContext context,
-      Future<Null> Function(String code) getPoll) async {
+  Future<void> _showPollDialog(
+      BuildContext context, Future<Null> Function(String code) getPoll) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -98,7 +98,11 @@ class _PublicPollsState extends State<PublicPolls> {
           }
         },
       ),
-      body: searched == null ? PollList() : PollTile(searched),
+      body: searched == null
+          ? PollList()
+          : searched.id == 0
+              ? PollList()
+              : PollTile(searched),
     );
   }
 }

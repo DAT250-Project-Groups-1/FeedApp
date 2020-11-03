@@ -32,3 +32,16 @@ func PostUser(c *gin.Context) {
 		c.JSON(http.StatusOK, user)
 	}
 }
+
+// GetUser returns the authenticated user
+func GetUser(c *gin.Context) {
+	userRecord := c.MustGet("user").(*auth.UserRecord)
+	var user models.User
+
+	db := c.MustGet("db").(*gorm.DB)
+	res := db.Preload("Polls").Preload("Votes").Where("id = ?", userRecord.UID).First(&user)
+	if res.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": res.Error.Error()})
+	}
+	c.JSON(http.StatusOK, user)
+}

@@ -4,10 +4,17 @@ import 'package:app/src/models/vote.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PollTile extends StatelessWidget {
+class PollTile extends StatefulWidget {
   final Poll poll;
 
   PollTile(this.poll);
+
+  @override
+  _PollTileState createState() => _PollTileState();
+}
+
+class _PollTileState extends State<PollTile> {
+  bool voted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,50 +28,75 @@ class PollTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              poll.question,
+              widget.poll.question,
               textScaleFactor: 1.3,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    if (poll.isPrivate) {
-                      apiService.postVote(
-                        Vote(isYes: true, pollID: poll.id),
-                      );
-                    } else {
-                      apiService.postPublicVote(
-                        Vote(isYes: true, pollID: poll.id),
-                      );
-                    }
-                  },
-                  child: Text(
-                    "YES",
-                    style: TextStyle(color: Color(0xFFc68400)),
+            child: voted
+                ? Row(
+                    children: [
+                      TextButton(
+                        onPressed: null,
+                        child: Text(
+                          this.widget.poll.countYes.toString(),
+                          style: TextStyle(color: Color(0xFFc68400)),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: null,
+                        child: Text(
+                          this.widget.poll.countNo.toString(),
+                          style: TextStyle(color: Color(0xFFc68400)),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          if (widget.poll.isPrivate) {
+                            apiService.postVote(
+                              Vote(isYes: true, pollID: widget.poll.id),
+                            );
+                          } else {
+                            apiService.postPublicVote(
+                              Vote(isYes: true, pollID: widget.poll.id),
+                            );
+                          }
+                          setState(() {
+                            voted = true;
+                          });
+                        },
+                        child: Text(
+                          "YES",
+                          style: TextStyle(color: Color(0xFFc68400)),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (widget.poll.isPrivate) {
+                            apiService.postVote(
+                              Vote(isYes: false, pollID: widget.poll.id),
+                            );
+                          } else {
+                            apiService.postPublicVote(
+                              Vote(isYes: false, pollID: widget.poll.id),
+                            );
+                          }
+                          setState(() {
+                            voted = true;
+                          });
+                        },
+                        child: Text(
+                          "NO",
+                          style: TextStyle(color: Color(0xFFc68400)),
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (poll.isPrivate) {
-                      apiService.postVote(
-                        Vote(isYes: false, pollID: poll.id),
-                      );
-                    } else {
-                      apiService.postPublicVote(
-                        Vote(isYes: false, pollID: poll.id),
-                      );
-                    }
-                  },
-                  child: Text(
-                    "NO",
-                    style: TextStyle(color: Color(0xFFc68400)),
-                  ),
-                )
-              ],
-            ),
           )
         ],
       )),
