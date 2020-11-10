@@ -22,16 +22,21 @@ func main() {
 	body, err := json.Marshal(&models.IotDevice{Name: name})
 	if err != nil {
 		fmt.Println(err.Error())
-		panic("hshsh")
+		panic("Error Marshalling name of iot device")
 	}
 
-	resp, err := http.Post(host+"/iot/device", "application/json", bytes.NewBuffer(body))
+	resp, err := http.Get(host + "/iot/devices/" + name)
 	if err != nil {
-		fmt.Println(err.Error())
-		panic("hsdsdsshsh")
+		fmt.Print("Creating new device...")
+		resp, err = http.Post(host+"/iot/devices/", "application/json", bytes.NewBuffer(body))
+		if err != nil {
+			fmt.Println(err.Error())
+			panic("linje34")
+		}
 	}
 
 	defer resp.Body.Close()
+
 	respBody, err := ioutil.ReadAll(resp.Body)
 
 	err = json.Unmarshal(respBody, &iotDevice)
@@ -41,12 +46,13 @@ func main() {
 	}
 
 	var code string
-	fmt.Println("Enter ID of the poll you would like to connect this iot device to:")
+	fmt.Println("Enter join code of the poll you would like to connect this iot device to:")
 	fmt.Scan(&code)
 
-	resp, err = http.Get(host + "/iot/poll/" + code)
+	resp, err = http.Get(host + "/public/polls/" + code)
 	if err != nil {
 		fmt.Println(err.Error())
+		panic("linje 50")
 	}
 
 	defer resp.Body.Close()
@@ -55,6 +61,7 @@ func main() {
 	err = json.Unmarshal(respBody, &poll)
 	if err != nil {
 		fmt.Println(err.Error())
+		panic("linje 59")
 	}
 
 	iotVotes.PollID = poll.ID
