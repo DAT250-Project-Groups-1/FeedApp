@@ -5,7 +5,7 @@ go 1.15
 require (
 	cloud.google.com/go/firestore v1.3.0 // indirect
 	firebase.google.com/go v3.13.0+incompatible
-	github.com/gin-gonic/contrib v0.0.0-20201005132743-ca038bbf2944
+	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
@@ -17,9 +17,9 @@ require (
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/ugorji/go v1.1.13 // indirect
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
-	golang.org/x/net v0.0.0-20201027133719-8eef5233e2a1 // indirect
-	golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c // indirect
-	google.golang.org/api v0.34.0 // indirect
+	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect
+	golang.org/x/sys v0.0.0-20201107080550-4d91cf3a1aaf // indirect
+	google.golang.org/api v0.35.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gorm.io/driver/postgres v1.0.5

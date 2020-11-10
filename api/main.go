@@ -70,6 +70,14 @@ func main() {
 		public.POST("/vote", controllers.PostPublicVote)
 	}
 
+	iot := router.Group("/iot")
+	{
+		iot.GET("/poll/:code", controllers.GetPollForIotDevice)
+		iot.GET("/devices", controllers.GetIotDevices)
+		iot.POST("/devices", controllers.PostIotDevice)
+		iot.POST("/votes", controllers.PostIotVotes)
+	}
+
 	// Listen to messages from message broker
 	go subscriber.Subscribe()
 
