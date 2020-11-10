@@ -73,7 +73,6 @@ func main() {
 	iot := router.Group("/iot")
 	{
 		iot.GET("/poll/:code", controllers.GetPollForIotDevice)
-		iot.GET("/devices/:name", controllers.GetIotDevice)
 		iot.GET("/devices", controllers.GetIotDevices)
 		iot.POST("/devices", controllers.PostIotDevice)
 		iot.POST("/votes", controllers.PostIotVotes)

@@ -6,14 +6,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 )
 
+var host = "http://localhost:8080"
+
 func main() {
-	host := "http://localhost:8080"
-	var iotDevice *models.IotDevice
-	var iotVotes *models.IotVotes
-	var poll *models.Poll
+	fmt.Print("\033[H\033[2J")
 
 	var name string
 	fmt.Println("Enter name of iot device:")
@@ -21,86 +22,89 @@ func main() {
 
 	body, err := json.Marshal(&models.IotDevice{Name: name})
 	if err != nil {
-		fmt.Println(err.Error())
-		panic("Error Marshalling name of iot device")
+		log.Fatal(err.Error())
 	}
 
-	resp, err := http.Get(host + "/iot/devices/" + name)
+	resp, err := http.Post(host+"/iot/devices", "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		fmt.Print("Creating new device...")
-		resp, err = http.Post(host+"/iot/devices/", "application/json", bytes.NewBuffer(body))
-		if err != nil {
-			fmt.Println(err.Error())
-			panic("linje34")
-		}
+		log.Fatal(err.Error())
 	}
 
+	var device models.IotDevice
 	defer resp.Body.Close()
+	body, err = ioutil.ReadAll(resp.Body)
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-
-	err = json.Unmarshal(respBody, &iotDevice)
+	err = json.Unmarshal(body, &device)
 	if err != nil {
-		fmt.Println(err.Error())
-		panic("hssdsdsdhsh")
+		log.Fatal(err.Error())
 	}
+
+	fmt.Print("\033[H\033[2J")
 
 	var code string
-	fmt.Println("Enter join code of the poll you would like to connect this iot device to:")
+	fmt.Println("Enter code of the poll you would like to connect this iot device to:")
 	fmt.Scan(&code)
 
-	resp, err = http.Get(host + "/public/polls/" + code)
-	if err != nil {
-		fmt.Println(err.Error())
-		panic("linje 50")
-	}
-
-	defer resp.Body.Close()
-	respBody, err = ioutil.ReadAll(resp.Body)
-
-	err = json.Unmarshal(respBody, &poll)
-	if err != nil {
-		fmt.Println(err.Error())
-		panic("linje 59")
-	}
-
-	iotVotes.PollID = poll.ID
+	poll := getPoll(code)
+	var votes models.IotVotes
+	votes.PollID = poll.ID
+	votes.IotDeviceID = device.ID
 
 	for {
+		fmt.Print("\033[H\033[2J")
 		var ans string
-		fmt.Println(poll.Question)
+		fmt.Println(poll.Question + (" (y/n)"))
 		fmt.Scan(&ans)
 		switch ans {
-		case "1":
-			iotVotes.CountYes++
-		case "0":
-			iotVotes.CountNo++
+		case "y":
+			votes.CountYes++
+		case "n":
+			votes.CountNo++
 		case "s":
-			votesBody, err := json.Marshal(iotVotes)
-			if err != nil {
-				fmt.Print(err.Error())
-			}
-			_, err = http.Post(host+"/iot/votes", "application/json", bytes.NewBuffer(votesBody))
-			iotVotes = new(models.IotVotes)
+			votes = postVotes(&votes)
+			votes.PollID = poll.ID
+			votes.IotDeviceID = device.ID
 		case "v":
-			resp, err = http.Get(host + "/iot/poll/" + code)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
+			poll = getPoll(code)
 
-			defer resp.Body.Close()
-			respBody, err = ioutil.ReadAll(resp.Body)
+			var dummy string
+			fmt.Print("\033[H\033[2J")
+			fmt.Printf("Yes: %d, No: %d \n", poll.CountYes+votes.CountYes, poll.CountNo+votes.CountNo)
+			fmt.Println("Enter any key to continue")
+			fmt.Scan(&dummy)
 
-			err = json.Unmarshal(respBody, &poll)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
+		case "q":
+			os.Exit(0)
 		}
 	}
 }
 
-/*
-	POST localhost:8080/iot/device To post the iot device
-	POST localhost:8080/oit/votes To post the votes
-	GET localhost:8080/iot/poll/:code
-*/
+func getPoll(code string) models.Poll {
+	var poll models.Poll
+	resp, err := http.Get(host + "/public/polls/" + code)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	err = json.Unmarshal(body, &poll)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	if poll.ID == 0 {
+		log.Fatal(("Poll not found"))
+	}
+
+	return poll
+}
+
+func postVotes(votes *models.IotVotes) models.IotVotes {
+	votesBody, err := json.Marshal(votes)
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+	_, err = http.Post(host+"/iot/votes", "application/json", bytes.NewBuffer(votesBody))
+	return models.IotVotes{}
+}
