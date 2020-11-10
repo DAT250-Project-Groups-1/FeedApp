@@ -24,42 +24,27 @@ func GetPollForIotDevice(c *gin.Context) {
 	c.JSON(http.StatusOK, poll)
 }
 
-func GetIotDevice(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-	var device models.IotDevice
-
-	res := db.Where("Name =?", c.Param("name")).Find(&device)
-	if res.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "could not get iot device"})
-		return
-	}
-
-	c.JSON(http.StatusOK, device)
-
-}
-
 // PostIotDevice add a new iot device with given name if not already in database, else return the iot device with given name
 func PostIotDevice(c *gin.Context) {
 	var device models.IotDevice
+
 	err := c.ShouldBind(&device)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	db := c.MustGet("db").(*gorm.DB)
-	/*	res := db.Where("name = ?", device.Name).First(&device)
-		if res.Error != nil {
-	*/
-	res := db.Create(&device)
+	res := db.Where("name = ?", device.Name).First(&device)
 	if res.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": res.Error.Error()})
-		return
+		res := db.Create(&device)
+		if res.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": res.Error.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, device)
+	} else {
+		c.JSON(http.StatusOK, device)
 	}
-	/*c.JSON(http.StatusOK, device)
-	}*/
-
-	c.JSON(http.StatusOK, device)
 }
 
 // PostIotVotes posts votes from an iot device
